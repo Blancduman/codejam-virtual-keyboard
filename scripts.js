@@ -250,35 +250,34 @@ class Keyboard {
   buttonAction(button) {
     switch (button.code) {
       case "Backspace":
-        console.log("backspace");
+        this.handleBackspace();
         break;
       case "Tab":
-        console.log("tab");
+        this.handleTab();
         break;
       case "Delete":
-        console.log("delete");
+        this.handleDelete();
         break;
       case "CapsLock":
         this.LetterCases.capsLock = !this.LetterCases.capsLock;
-        console.log(this.LetterCases.capsLock);
         break;
       case "Enter":
-        console.log("enter");
+        this.handleEnter();
         break;
       case "ShiftLeft":
-        console.log("left-shift");
         break;
       case "ShiftRight":
-        console.log("right-shift");
-        break;
-      case "Space":
-        console.log("space");
         break;
       case "ArrowUp":
       case "ArrowLeft":
       case "ArrowDown":
       case "ArrowRight":
-        console.log("arrow");
+      case "AltLeft":
+      case "AltRight":
+      case "MetaLeft":
+      case "ControlLeft":
+      case "ControlRight":
+      case "MetaLeft":
         break;
       default:
         this.handleInput(button);
@@ -335,6 +334,8 @@ class Keyboard {
       } else if (!capsLock && shift) {
         if (typeof buttons[i].shift === "undefined") {
           key.textContent = key.textContent.toUpperCase();
+        } else {
+          key.textContent = buttons[i].shift[this.language];
         }
       }
     });
@@ -394,6 +395,47 @@ class Keyboard {
     });
 
     return keyboardFragment;
+  }
+
+  handleEnter() {
+    const { value, selectionStart } = this.textarea;
+
+    this.textarea.value = `${value.slice(0, selectionStart)}\n${value.slice(
+      selectionStart
+    )}`;
+
+    this.setTextAreaPosition(selectionStart + 1);
+  }
+
+  handleTab() {
+    const { value, selectionStart } = this.textarea;
+
+    this.textarea.value = `${value.slice(0, selectionStart)}\t${value.slice(
+      selectionStart
+    )}`;
+
+    this.setTextAreaPosition(selectionStart + 1);
+  }
+
+  handleBackspace() {
+    const { value, selectionStart } = this.textarea;
+    const newPosition = selectionStart > 0 ? selectionStart - 1 : 0;
+
+    this.textarea.value = `${value.slice(0, newPosition)}${value.slice(
+      selectionStart
+    )}`;
+
+    this.setTextAreaPosition(newPosition);
+  }
+
+  handleDelete() {
+    const { value, selectionStart } = this.textarea;
+
+    this.textarea.value = `${value.slice(0, selectionStart)}${value.slice(
+      selectionStart + 1
+    )}`;
+
+    this.setTextAreaPosition(selectionStart);
   }
 }
 
