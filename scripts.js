@@ -270,7 +270,7 @@ class Keyboard {
     this.keyboard = createElement("div", "keyboard");
     this.keyboard.append(generateKeyboardButtons());
     this.info = createElement("p", "info");
-    this.info.innerHTML = "[Win] Change language: <span>Shift + Alt</span>";
+    this.info.innerHTML = "[Win] Change language: <span class=\"description\">Shift + Alt</span>";
     this.keys = this.keyboard.querySelectorAll(".key");
     this.LetterCases.registerListener(this.renderKeyboardContent);
     this.container.append(this.textarea, this.keyboard, this.info);
