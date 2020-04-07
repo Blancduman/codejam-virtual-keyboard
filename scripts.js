@@ -310,6 +310,7 @@ class Keyboard {
   }
 
   buttonAction(button) {
+    const { selectionStart } = this.textarea;
     switch (button.code) {
       case "Backspace":
         this.handleBackspace();
@@ -331,9 +332,9 @@ class Keyboard {
       case "ShiftRight":
         break;
       case "ArrowUp":
-      case "ArrowLeft":
+      case "ArrowLeft": this.setTextAreaPosition(selectionStart > 0 ? selectionStart - 1 : 0); break;
       case "ArrowDown":
-      case "ArrowRight":
+      case "ArrowRight": this.setTextAreaPosition(selectionStart + 1); break;
       case "AltLeft":
       case "AltRight":
       case "MetaLeft":
