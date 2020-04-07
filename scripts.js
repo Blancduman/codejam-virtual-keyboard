@@ -10,7 +10,7 @@ const buttons = [
     code: "Digit2",
     en: "2",
     ru: "2",
-    shift: { en: "@", ru: '"' },
+    shift: { en: "@", ru: "\"" },
   },
   {
     code: "Digit3",
@@ -124,7 +124,7 @@ const buttons = [
     code: "Quote",
     en: "'",
     ru: "э",
-    shift: { en: '"', ru: "э" },
+    shift: { en: "\"", ru: "э" },
   },
   { code: "Enter", en: "Enter", ru: "Enter" },
   { code: "ShiftLeft", en: "Shift", ru: "Shift" },
@@ -166,35 +166,97 @@ const buttons = [
   { code: "ControlRight", en: "Ctrl", ru: "Ctrl" },
 ];
 
+function createElement(tagName, ...classNames) {
+  const element = document.createElement(tagName);
+
+  element.classList.add(...classNames);
+
+  return element;
+}
+
+function generateKeyboardButtons() {
+  const keyboardFragment = new DocumentFragment();
+
+  buttons.forEach((button) => {
+    const key = createElement("button", "key");
+    key.setAttribute("type", "button");
+
+    switch (button.code) {
+      case "Backspace":
+        key.classList.add("backspace");
+        break;
+      case "Tab":
+        key.classList.add("tab");
+        break;
+      case "Delete":
+        key.classList.add("delete");
+        break;
+      case "CapsLock":
+        key.classList.add("capslock");
+        break;
+      case "Enter":
+        key.classList.add("enter");
+        break;
+      case "ShiftLeft":
+        key.classList.add("left-shift");
+        break;
+      case "ShiftRight":
+        key.classList.add("right-shift");
+        break;
+      case "Space":
+        key.classList.add("space");
+        break;
+      case "ArrowUp":
+      case "ArrowLeft":
+      case "ArrowDown":
+      case "ArrowRight":
+        key.classList.add("arrow");
+        break;
+      default:
+        break;
+    }
+
+    keyboardFragment.append(key);
+  });
+
+  return keyboardFragment;
+}
+
 class Keyboard {
   container = null;
+
   textarea = null;
+
   keyboard = null;
+
   info = null;
+
   keys = [];
+
   LetterCases = {
-    _shift: false,
-    _capsLock: false,
-    _listener: null,
+    SUPAshift: false,
+    SUPAcapsLock: false,
+    SUPAlistener: null,
     get shift() {
-      return this._shift;
+      return this.SUPAshift;
     },
     set shift(value) {
-      this._shift = value;
-      this._listener(this._shift, this._capsLock);
+      this.SUPAshift = value;
+      this.SUPAlistener(this.SUPAshift, this.SUPAcapsLock);
     },
     get capsLock() {
-      return this._capsLock;
+      return this.SUPAcapsLock;
     },
     set capsLock(value) {
-      this._capsLock = value;
-      this._listener(this._shift, this._capsLock);
+      this.SUPAcapsLock = value;
+      this.SUPAlistener(this.SUPAshift, this.SUPAcapsLock);
     },
-    registerListener: function (listener) {
-      this._listener = listener;
-      this._listener(this._shift, this._capsLock);
+    registerListener(listener) {
+      this.SUPAlistener = listener;
+      this.SUPAlistener(this.SUPAshift, this.SUPAcapsLock);
     },
   };
+
   language = localStorage.getItem("language") || "en";
 
   changeLanguage() {
@@ -203,12 +265,12 @@ class Keyboard {
   }
 
   init() {
-    this.container = this.createElement("div", "container");
-    this.textarea = this.createElement("textarea", "textarea");
-    this.keyboard = this.createElement("div", "keyboard");
-    this.keyboard.append(this.generateKeyboardButtons());
-    this.info = this.createElement("p", "info").innerHTML =
-      "[Win] Change language: <span>Shift + Alt</span>";
+    this.container = createElement("div", "container");
+    this.textarea = createElement("textarea", "textarea");
+    this.keyboard = createElement("div", "keyboard");
+    this.keyboard.append(generateKeyboardButtons());
+    this.info = createElement("p", "info");
+    this.info.innerHTML = "[Win] Change language: <span>Shift + Alt</span>";
     this.keys = this.keyboard.querySelectorAll(".key");
     this.LetterCases.registerListener(this.renderKeyboardContent);
     this.container.append(this.textarea, this.keyboard, this.info);
@@ -222,7 +284,7 @@ class Keyboard {
   onClick = (event) => {
     if (event.target.classList.contains("key")) {
       const index = Array.from(this.keys).findIndex(
-        (key) => key === event.target
+        (key) => key === event.target,
       );
       this.buttonAction(buttons[index]);
     }
@@ -235,7 +297,7 @@ class Keyboard {
 
     this.textarea.value = `${value.slice(
       0,
-      selectionStart
+      selectionStart,
     )}${letter}${value.slice(selectionStart)}`;
 
     this.setTextAreaPosition(selectionStart + 1);
@@ -277,7 +339,6 @@ class Keyboard {
       case "MetaLeft":
       case "ControlLeft":
       case "ControlRight":
-      case "MetaLeft":
         break;
       default:
         this.handleInput(button);
@@ -313,8 +374,8 @@ class Keyboard {
     this.keys[index].classList.remove("active");
     // if (event.shiftKey) {
     if (
-      (event.code === "ShiftLeft" || event.code === "ShiftRight") &&
-      this.LetterCases.shift
+      (event.code === "ShiftLeft" || event.code === "ShiftRight")
+      && this.LetterCases.shift
     ) {
       this.LetterCases.shift = false;
     }
@@ -341,67 +402,11 @@ class Keyboard {
     });
   };
 
-  createElement(tagName, ...classNames) {
-    const element = document.createElement(tagName);
-
-    element.classList.add(...classNames);
-
-    return element;
-  }
-
-  generateKeyboardButtons() {
-    const keyboardFragment = new DocumentFragment();
-
-    buttons.forEach((button) => {
-      const key = this.createElement("button", "key");
-      key.setAttribute("type", "button");
-
-      switch (button.code) {
-        case "Backspace":
-          key.classList.add("backspace");
-          break;
-        case "Tab":
-          key.classList.add("tab");
-          break;
-        case "Delete":
-          key.classList.add("delete");
-          break;
-        case "CapsLock":
-          key.classList.add("capslock");
-          break;
-        case "Enter":
-          key.classList.add("enter");
-          break;
-        case "ShiftLeft":
-          key.classList.add("left-shift");
-          break;
-        case "ShiftRight":
-          key.classList.add("right-shift");
-          break;
-        case "Space":
-          key.classList.add("space");
-          break;
-        case "ArrowUp":
-        case "ArrowLeft":
-        case "ArrowDown":
-        case "ArrowRight":
-          key.classList.add("arrow");
-          break;
-        default:
-          break;
-      }
-
-      keyboardFragment.append(key);
-    });
-
-    return keyboardFragment;
-  }
-
   handleEnter() {
     const { value, selectionStart } = this.textarea;
 
     this.textarea.value = `${value.slice(0, selectionStart)}\n${value.slice(
-      selectionStart
+      selectionStart,
     )}`;
 
     this.setTextAreaPosition(selectionStart + 1);
@@ -411,7 +416,7 @@ class Keyboard {
     const { value, selectionStart } = this.textarea;
 
     this.textarea.value = `${value.slice(0, selectionStart)}\t${value.slice(
-      selectionStart
+      selectionStart,
     )}`;
 
     this.setTextAreaPosition(selectionStart + 1);
@@ -422,7 +427,7 @@ class Keyboard {
     const newPosition = selectionStart > 0 ? selectionStart - 1 : 0;
 
     this.textarea.value = `${value.slice(0, newPosition)}${value.slice(
-      selectionStart
+      selectionStart,
     )}`;
 
     this.setTextAreaPosition(newPosition);
@@ -432,7 +437,7 @@ class Keyboard {
     const { value, selectionStart } = this.textarea;
 
     this.textarea.value = `${value.slice(0, selectionStart)}${value.slice(
-      selectionStart + 1
+      selectionStart + 1,
     )}`;
 
     this.setTextAreaPosition(selectionStart);

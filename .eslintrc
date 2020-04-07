@@ -5,5 +5,20 @@
   },
   "extends": "airbnb/base",
   "parser": "babel-eslint",
-  "rules": {}
+  "rules": {
+    "linebreak-style": [
+      "error",
+      "windows"
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ]
+  }
 }
