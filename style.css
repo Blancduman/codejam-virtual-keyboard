@@ -7,6 +7,10 @@ body {
   background-color: #00203fff;
 }
 
+.info {
+  color: #82e3ea;
+}
+
 .container {
   width: 1020px;
   margin: 70px auto;
@@ -89,6 +93,10 @@ body {
   background: #00203fff;
   color: #adefd1ff;
   border-color: #adefd1ff;
+}
+
+.description {
+  color: #adefd1ff;;
 }
 
 /* .meta-left,
