@@ -1,0 +1,114 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #00203fff;
+}
+
+.info {
+  color: #82e3ea;
+}
+
+.container {
+  width: 1020px;
+  margin: 70px auto;
+  padding: 20px;
+}
+
+.textarea {
+  width: 100%;
+  height: 400px;
+  margin: 0 0 50px 0;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.keyboard {
+  width: 840px;
+  display: flex;
+  border-radius: 8px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.key {
+  width: 50px;
+  height: 50px;
+  margin: 0 4px 4px 0;
+  background-color: #adefd1ff;
+  color: #00203fff;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #00203fff;
+  border-radius: 2px;
+  outline: 0;
+  user-select: none;
+  transition: transform 0.3s;
+  transform-style: preserve-3d;
+}
+
+.key:hover {
+  background: #00203fff;
+  color: #adefd1ff;
+  border-color: #adefd1ff;
+  cursor: pointer;
+}
+
+.backspace {
+  width: 134px;
+}
+
+.tab {
+  width: 80px;
+}
+
+.delete {
+  width: 50px;
+}
+
+.capslock {
+  width: 100px;
+}
+
+.enter {
+  width: 138px;
+}
+
+.left-shift {
+  width: 133px;
+}
+
+.right-shift {
+  width: 105px;
+}
+
+.space {
+  width: 404px;
+}
+
+.arrow {
+  font-size: 20px;
+}
+
+.active {
+  background: #00203fff;
+  color: #adefd1ff;
+  border-color: #adefd1ff;
+  animation: rotatingButton 0.3s linear infinite;
+}
+
+.description {
+  color: #adefd1ff;;
+}
+
+@keyframes rotatingButton {
+  from {
+    transform: translateY(-15px) rotate(0);
+  }
+  to {
+    transform: translateY(-15px) rotate(360deg);
+  }
+}
