@@ -31,6 +31,7 @@ body {
   border-radius: 8px;
   margin: 0 auto;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .key {
@@ -45,6 +46,8 @@ body {
   border-radius: 2px;
   outline: 0;
   user-select: none;
+  transition: transform 0.3s;
+  transform-style: preserve-3d;
 }
 
 .key:hover {
@@ -77,6 +80,7 @@ body {
 .left-shift {
   width: 133px;
 }
+
 .right-shift {
   width: 105px;
 }
@@ -93,16 +97,18 @@ body {
   background: #00203fff;
   color: #adefd1ff;
   border-color: #adefd1ff;
+  animation: rotatingButton 0.3s linear infinite;
 }
 
 .description {
   color: #adefd1ff;;
 }
 
-/* .meta-left,
-.control-left,
-.control-right,
-.alt-right,
-.alt-left {
-  width: 55px;
-} */
+@keyframes rotatingButton {
+  from {
+    transform: translateY(-15px) rotate(0);
+  }
+  to {
+    transform: translateY(-15px) rotate(360deg);
+  }
+}
